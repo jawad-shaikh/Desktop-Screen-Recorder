@@ -1,5 +1,12 @@
-const { app, BrowserWindow, desktopCapturer } = require("electron");
 const path = require("path");
+const { writeFile } = require("fs");
+const {
+  app,
+  BrowserWindow,
+  desktopCapturer,
+  ipcMain,
+  Menu,
+} = require("electron");
 
 let mainWindow;
 const createWindow = () => {
@@ -30,19 +37,29 @@ app.on("window-all-closed", () => {
   }
 });
 
-setTimeout(() => {
-  desktopCapturer
-    .getSources({ types: ["window", "screen"] })
-    .then(async (sources) => {
-      console.log(sources);
-      for (const source of sources) {
-        if (
-          source.name ===
-          "main.js - Desktop-Screen-Recorder g - Visual Studio Code"
-        ) {
-          mainWindow.webContents.send("SET_SOURCE", source.id);
-          return;
-        }
-      }
-    });
-}, 3000);
+ipcMain.on("GET-SOURCES", async () => {
+  const inputSources = await desktopCapturer.getSources({
+    types: ["window", "screen"],
+  });
+
+  const videoOptionsMenu = Menu.buildFromTemplate(
+    inputSources.map((source) => {
+      return {
+        label: source.name,
+        click: () => selectSource(source),
+      };
+    })
+  );
+
+  videoOptionsMenu.popup();
+});
+
+ipcMain.on("SAVE-RECORDING", (event, buffer) => {
+  writeFile(path.join(__dirname, "files/abc.mp4"), buffer, () =>
+    console.log("video saved successfully!")
+  );
+});
+
+async function selectSource(source) {
+  mainWindow.webContents.send("SET_SOURCE", source.id);
+}
