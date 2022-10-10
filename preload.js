@@ -1,15 +1,6 @@
 const { ipcRenderer } = require("electron");
 
-const startRecording = document.getElementById("startRecording");
-const stopRecording = document.getElementById("stopRecording");
-const availableScreens = document.getElementById("availableScreens");
-
-availableScreens.addEventListener("click", () => {
-  ipcRenderer.send("set-options");
-});
-
-ipcRenderer.on("set-options", async (event, sourceId) => {
-  console.log("called");
+ipcRenderer.on("SET_SOURCE", async (event, sourceId) => {
   try {
     const stream = await navigator.mediaDevices.getUserMedia({
       audio: false,
@@ -24,7 +15,6 @@ ipcRenderer.on("set-options", async (event, sourceId) => {
         },
       },
     });
-
     handleStream(stream);
   } catch (e) {
     handleError(e);
