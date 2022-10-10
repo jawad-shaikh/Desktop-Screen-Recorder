@@ -1,0 +1,22 @@
+{
+  "name": "desktop-screen-recorder",
+  "version": "1.0.0",
+  "description": "desktop screen recorder software",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jawad-shaikh/Desktop-Screen-Recorder.git"
+  },
+  "author": "jawad",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jawad-shaikh/Desktop-Screen-Recorder/issues"
+  },
+  "homepage": "https://github.com/jawad-shaikh/Desktop-Screen-Recorder#readme",
+  "dependencies": {
+    "electron": "^21.1.0"
+  }
+}
