@@ -8,60 +8,14 @@
   </head>
   <body>
     <h1>log in</h1>
-    <form>
-      <input type="email" placeholder="email" id="email" />
-      <input type="password" placeholder="password" id="password" />
+    <form id="loginForm">
+      <input type="email" placeholder="email" id="loginEmail" />
+      <input type="password" placeholder="password" id="loginPassword" />
       <input type="submit" />
     </form>
 
     <a href="signup.html">signup</a>
 
-    <script src="jquery-3.6.1.min.js"></script>
-    <script>
-      const form = document.querySelector("form");
-
-      form.addEventListener("submit", (e) => {
-        e.preventDefault();
-
-        const login_email = document.getElementById("email").value;
-        const login_pass = document.getElementById("password").value;
-
-        $.ajax({
-          url: `https://app.recod.io/api/login.php`,
-          type: "POST",
-          data: { login_email, login_pass },
-          success: function (res) {
-            if (res != 0) {
-              var userObj = JSON.parse(res);
-              localStorage.setItem("userId", userObj.user_id);
-              console.log("login success");
-            } else {
-              console.log("incorrect creds");
-            }
-          },
-        });
-
-        // var url = "https://app.recod.io/api/login.php";
-
-        // var xhr = new XMLHttpRequest();
-        // xhr.open("POST", url);
-
-        // xhr.setRequestHeader("Content-Type", "application/json");
-
-        // xhr.onreadystatechange = function () {
-        //   if (xhr.readyState === 4) {
-        //     console.log(xhr.status);
-        //     console.log(xhr.responseText);
-        //   }
-        // };
-
-        // var data = JSON.stringify({
-        //   login_email: login_email,
-        //   login_pass: login_pass,
-        // });
-
-        // xhr.send(data);
-      });
-    </script>
+    <script src="./renderer.js"></script>
   </body>
 </html>

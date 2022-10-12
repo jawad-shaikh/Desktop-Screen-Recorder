@@ -7,6 +7,27 @@ contextBridge.exposeInMainWorld("electronAPI", {
   getSorces: () => ipcRenderer.send("GET-SOURCES"),
   startRecording: () => mediaRecorder.start(),
   stopRecording: () => mediaRecorder.stop(),
+  login: (email, password) => ipcRenderer.send("LOGIN", email, password),
+  signup: (username, email, password) =>
+    ipcRenderer.send("SIGNUP", username, email, password),
+});
+
+ipcRenderer.on("LOGIN_RESPONSE", async (event, res) => {
+  if (res == 0) {
+    console.log("incorrect creds");
+  } else {
+    res = JSON.parse(res);
+    localStorage.setItem("userId", res.user_id);
+  }
+});
+
+ipcRenderer.on("SIGNUP_RESPONSE", async (event, res) => {
+  if (res == 0) {
+    console.log("email already exists");
+  } else {
+    res = JSON.parse(res);
+    localStorage.setItem("userId", res.user_id);
+  }
 });
 
 ipcRenderer.on("SET_SOURCE", async (event, sourceId) => {
