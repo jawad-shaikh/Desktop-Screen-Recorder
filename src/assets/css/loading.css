@@ -1,0 +1,79 @@
+:root {
+  --theme-color: #4c6ef8;
+  --max-pad-top: 100px;
+  --min-pad-top: 50px;
+  --max-pad-bottom: 100px;
+  --min-pad-bottom: 50px;
+  --app-width: 400px;
+  --app-height: 300px;
+  --white-clr: #fff;
+  --dark-color: #292d40;
+}
+
+@font-face {
+  font-family: sans;
+  src: url(../fonts/ProductSans-Regular.ttf);
+}
+
+.top-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  -webkit-user-select: none;
+  -webkit-app-region: drag;
+  z-index: 9999;
+}
+.top-bar .window-title img {
+  width: 16px;
+}
+.window-title {
+  padding: 0px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.window-title strong {
+  user-select: none;
+}
+html,
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: sans;
+  overflow: hidden;
+}
+
+.main-window {
+  position: relative;
+  width: var(--app-width);
+  height: var(--app-height);
+  border: 1px solid #d3d3d3;
+}
+
+.centered-area img {
+  width: 200px;
+  user-select: none;
+  filter: hue-rotate(56deg) saturate(28.5);
+}
+
+.centered-area {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+h3 {
+  margin: 0;
+  font-weight: normal;
+}

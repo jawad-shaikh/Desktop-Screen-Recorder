@@ -11,18 +11,54 @@
       content="default-src 'self'; script-src 'self'"
     />
     <title>Hello from Electron renderer!</title>
+    <link rel="stylesheet" href="assets/css/style.css" />
   </head>
   <body>
-    <h1>Hello from Electron renderer!</h1>
-    <video width="700px"></video>
+    <div class="main-window">
+      <div class="top-bar">
+        <div class="window-title">
+          <img src="assets/img/logo-16.png" alt="title logo" />
+          <strong>Recod</strong>
+        </div>
+        <div class="window-cta">
+          <button class="min-window cta-btn" title="Minimize">
+            <ion-icon name="remove-circle-outline"></ion-icon>
+          </button>
+          <button class="max-window cta-btn" title="Maximize">
+            <ion-icon name="albums-outline"></ion-icon>
+          </button>
+          <button class="close-window cta-btn" title="Close">
+            <ion-icon name="close-circle-outline"></ion-icon>
+          </button>
+        </div>
+      </div>
+      <div class="centered-area">
+        <span class="j-icon"
+          ><ion-icon name="videocam-outline"></ion-icon
+        ></span>
+        <video></video>
+      </div>
+      <div class="bottom-bar">
+        <button class="video-start btm-btn" id="startRecording">
+          <ion-icon name="play-outline"></ion-icon><span>Start</span>
+        </button>
+        <button class="video-pause btm-btn" id="stopRecording">
+          <ion-icon name="stop-outline"></ion-icon><span>Stop</span>
+        </button>
+        <button class="video-source btm-btn" id="getSorces">
+          <ion-icon name="list-outline"></ion-icon><span>Source</span>
+        </button>
+      </div>
+    </div>
 
-    <button id="startRecording">start recording</button>
-    <button id="stopRecording">stop recording</button>
-    <button id="getSorces">get sorces</button>
-    <hr />
-    <a href="signup.html">signup</a>
-    <a href="login.html">login</a>
+    <script
+      type="module"
+      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
+    ></script>
+    <script
+      nomodule
+      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"
+    ></script>
+    <script src="./renderer.js"></script>
   </body>
-
-  <script src="./renderer.js"></script>
 </html>

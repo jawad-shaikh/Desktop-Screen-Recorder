@@ -1,7 +1,7 @@
+require("dotenv").config();
 const { JSDOM } = require("jsdom");
 const { window } = new JSDOM("");
 const $ = require("jquery")(window);
-
 const path = require("path");
 const { writeFile } = require("fs");
 const {
@@ -12,14 +12,18 @@ const {
   Menu,
 } = require("electron");
 
+const { API } = require("./consonant");
+
 let mainWindow;
 let loginWindow;
 let signupWindow;
+let preloaderWindow;
 
-const createmainWindow = () => {
+const createMainWindow = () => {
   mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 1280,
+    height: 720,
+    frame: false,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
     },
@@ -30,8 +34,9 @@ const createmainWindow = () => {
 
 const createLoginWindow = () => {
   loginWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 302,
+    height: 502,
+    frame: false,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
     },
@@ -42,8 +47,9 @@ const createLoginWindow = () => {
 
 const createSignupWindow = () => {
   signupWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 302,
+    height: 502,
+    frame: false,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
     },
@@ -52,14 +58,28 @@ const createSignupWindow = () => {
   signupWindow.loadFile(path.join(__dirname, "signup.html"));
 };
 
+const createPreloaderWindow = () => {
+  preloaderWindow = new BrowserWindow({
+    width: 402,
+    height: 302,
+    frame: false,
+    webPreferences: {
+      preload: path.join(__dirname, "preload.js"),
+    },
+  });
+
+  preloaderWindow.loadFile(path.join(__dirname, "preloader.html"));
+};
+
 app.whenReady().then(() => {
-  // createmainWindow();
-  createLoginWindow();
+  createMainWindow();
+  // createLoginWindow();
   // createSignupWindow();
+  // createPreloaderWindow();
 
   app.on("activate", () => {
     if (BrowserWindow.getAllWindows().length === 0) {
-      createmainWindow();
+      createMainWindow();
     }
   });
 });
@@ -72,7 +92,7 @@ app.on("window-all-closed", () => {
 
 ipcMain.on("LOGIN", async (event, email, password) => {
   $.ajax({
-    url: "https://app.recod.io/api/login.php",
+    url: `${API}/login.php`,
     type: "POST",
     data: { login_email: email, login_pass: password },
     success: function (res) {
@@ -83,7 +103,7 @@ ipcMain.on("LOGIN", async (event, email, password) => {
 
 ipcMain.on("SIGNUP", async (event, username, email, password) => {
   $.ajax({
-    url: "https://app.recod.io/api/register.php",
+    url: `${API}/register.php`,
     type: "POST",
     data: { user_name: username, user_email: email, user_pass: password },
     success: function (res) {

@@ -5,17 +5,81 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <link rel="stylesheet" href="assets/css/account.css" />
   </head>
   <body>
-    <h1>sign up</h1>
-    <form id="signupForm">
-      <input type="text" placeholder="username" id="signupUsername" />
-      <input type="email" placeholder="email" id="signupEmail" />
-      <input type="password" placeholder="password" id="signupPassword" />
-      <input type="submit" />
-    </form>
+    <div class="main-window">
+      <div class="top-bar">
+        <div class="window-title">
+          <img src="assets/img/logo-16.png" alt="title logo" />
+          <strong>Recod</strong>
+        </div>
+        <div class="window-cta">
+          <button class="min-window cta-btn" title="Minimize">
+            <ion-icon name="remove-circle-outline"></ion-icon>
+          </button>
+          <button class="close-window cta-btn" title="Close">
+            <ion-icon name="close-circle-outline"></ion-icon>
+          </button>
+        </div>
+      </div>
+      <div class="centered-area">
+        <form id="signupForm">
+          <div class="form-title">
+            <img src="assets/img/logo-16.png" alt="Recod Logo" />
+            <h3>Create a new Account</h3>
+          </div>
 
-    <a href="login.html">login</a>
+          <div class="form-body-wrapper">
+            <div class="form-body">
+              <input
+                type="text"
+                placeholder="Enter Your Name"
+                id="signupUsername"
+              />
+            </div>
+            <div class="form-body">
+              <input
+                type="text"
+                placeholder="Enter Email Address"
+                id="signupEmail"
+              />
+            </div>
+
+            <div class="form-bottom">
+              <input
+                type="text"
+                placeholder="Enter Password"
+                id="signupPassword"
+              />
+            </div>
+          </div>
+
+          <div class="form-call-to-action">
+            <input type="submit" value="Create" />
+          </div>
+
+          <div class="form-footer">
+            <span></span>
+            <h3>OR</h3>
+            <span></span>
+          </div>
+
+          <div class="final-signup">
+            <a href="login.html" class="sign-up">Login</a>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script
+      type="module"
+      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
+    ></script>
+    <script
+      nomodule
+      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"
+    ></script>
 
     <script src="./renderer.js"></script>
   </body>

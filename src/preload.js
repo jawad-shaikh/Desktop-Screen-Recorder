@@ -16,6 +16,7 @@ ipcRenderer.on("LOGIN_RESPONSE", async (event, res) => {
   if (res == 0) {
     console.log("incorrect creds");
   } else {
+    console.log("logged in");
     res = JSON.parse(res);
     localStorage.setItem("userId", res.user_id);
   }
@@ -25,6 +26,7 @@ ipcRenderer.on("SIGNUP_RESPONSE", async (event, res) => {
   if (res == 0) {
     console.log("email already exists");
   } else {
+    console.log("logged in");
     res = JSON.parse(res);
     localStorage.setItem("userId", res.user_id);
   }
