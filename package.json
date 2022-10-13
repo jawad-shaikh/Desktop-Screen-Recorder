@@ -2,7 +2,7 @@
   "name": "desktop-screen-recorder-2",
   "version": "1.0.0",
   "description": "",
-  "main": "main.js",
+  "main": "src/main.js",
   "scripts": {
     "start": "electron ."
   },
@@ -12,6 +12,7 @@
     "electron": "^21.1.0"
   },
   "dependencies": {
+    "dotenv": "^16.0.3",
     "jquery": "^3.6.1",
     "jsdom": "^20.0.1"
   }

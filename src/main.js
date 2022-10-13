@@ -25,7 +25,7 @@ const createmainWindow = () => {
     },
   });
 
-  mainWindow.loadFile("index.html");
+  mainWindow.loadFile(path.join(__dirname, "index.html"));
 };
 
 const createLoginWindow = () => {
@@ -37,7 +37,7 @@ const createLoginWindow = () => {
     },
   });
 
-  loginWindow.loadFile("login.html");
+  loginWindow.loadFile(path.join(__dirname, "login.html"));
 };
 
 const createSignupWindow = () => {
@@ -49,12 +49,12 @@ const createSignupWindow = () => {
     },
   });
 
-  signupWindow.loadFile("signup.html");
+  signupWindow.loadFile(path.join(__dirname, "signup.html"));
 };
 
 app.whenReady().then(() => {
-  createmainWindow();
-  // createLoginWindow();
+  // createmainWindow();
+  createLoginWindow();
   // createSignupWindow();
 
   app.on("activate", () => {
@@ -111,7 +111,7 @@ ipcMain.on("GET-SOURCES", async () => {
 });
 
 ipcMain.on("SAVE-RECORDING", (event, buffer) => {
-  writeFile(path.join(__dirname, "files/abc.mp4"), buffer, () =>
+  writeFile(path.join(__dirname, "../files/abc.mp4"), buffer, () =>
     console.log("video saved successfully!")
   );
 });
