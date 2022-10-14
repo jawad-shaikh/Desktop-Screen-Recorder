@@ -10,7 +10,7 @@
       http-equiv="X-Content-Security-Policy"
       content="default-src 'self'; script-src 'self'"
     />
-    <title>Hello from Electron renderer!</title>
+    <title>Recod</title>
     <link rel="stylesheet" href="assets/css/style.css" />
   </head>
   <body>
@@ -22,43 +22,54 @@
         </div>
         <div class="window-cta">
           <button class="min-window cta-btn" title="Minimize">
-            <ion-icon name="remove-circle-outline"></ion-icon>
+            <span class="icon-f"
+              ><img src="assets/icons/minus-circle.svg" alt="Minimize"
+            /></span>
           </button>
           <button class="max-window cta-btn" title="Maximize">
-            <ion-icon name="albums-outline"></ion-icon>
+            <span class="icon-f"
+              ><img src="assets/icons/maximize.svg" alt="Maximize"
+            /></span>
           </button>
           <button class="close-window cta-btn" title="Close">
-            <ion-icon name="close-circle-outline"></ion-icon>
+            <span class="icon-f"
+              ><img src="assets/icons/x-circle.svg" alt="Close"
+            /></span>
           </button>
         </div>
       </div>
       <div class="centered-area">
-        <span class="j-icon"
-          ><ion-icon name="videocam-outline"></ion-icon
-        ></span>
+        <span class="j-icon">
+          <img src="assets/icons/video.svg" alt="Video" />
+        </span>
         <video></video>
       </div>
       <div class="bottom-bar">
         <button class="video-start btm-btn" id="startRecording">
-          <ion-icon name="play-outline"></ion-icon><span>Start</span>
+          <span class="icon-b"
+            ><img src="assets/icons/play.svg" alt="Play"
+          /></span>
+          <span>Start</span>
         </button>
         <button class="video-pause btm-btn" id="stopRecording">
-          <ion-icon name="stop-outline"></ion-icon><span>Stop</span>
+          <span class="icon-b"
+            ><img src="assets/icons/pause.svg" alt="Play"
+          /></span>
+          <span>Stop</span>
         </button>
         <button class="video-source btm-btn" id="getSorces">
-          <ion-icon name="list-outline"></ion-icon><span>Source</span>
+          <span class="icon-b"
+            ><img src="assets/icons/menu.svg" alt="Play"
+          /></span>
+          <span>Source</span>
         </button>
+
+        <button id="minimizeWindow">Minimize</button>
+        <button id="maximizeWindow">Maximize</button>
+        <button id="closeWindow">Close</button>
       </div>
     </div>
 
-    <script
-      type="module"
-      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
-    ></script>
-    <script
-      nomodule
-      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"
-    ></script>
     <script src="./renderer.js"></script>
   </body>
 </html>

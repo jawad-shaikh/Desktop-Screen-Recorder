@@ -4,16 +4,15 @@
   --min-pad-top: 50px;
   --max-pad-bottom: 100px;
   --min-pad-bottom: 50px;
-  --app-width:
-  calc(100% - 2px);
-  --app-height:100vh;
+  --app-width: calc(100% - 2px);
+  --app-height: 100vh;
   --white-clr: #fff;
   --dark-color: #292d40;
 }
 
 @font-face {
-    font-family: sans;
-    src: url(../fonts/ProductSans-Regular.ttf);
+  font-family: sans;
+  src: url(../fonts/ProductSans-Regular.ttf);
 }
 
 html,
@@ -22,19 +21,21 @@ body {
   padding: 0;
   box-sizing: border-box;
   font-family: sans;
-  overflow:hidden;
+  overflow: hidden;
 }
 ion-icon {
-    pointer-events: none;
-    user-select: none;
+  pointer-events: none;
+  user-select: none;
 }
 .main-window {
+  background-color: black;
   position: relative;
   width: var(--app-width);
   height: var(--app-height);
-  border: 1px solid transparent;
+  border: 1px solid black;
 }
 .top-bar {
+  background-color: white;
   position: absolute;
   top: 0;
   left: 0;
@@ -103,9 +104,10 @@ button.min-window,
 }
 
 .cta-btn:nth-child(3):hover {
-  background: #f73e5e;
+  background: #08c1a1;
   color: #fff;
   transition: 200ms linear;
+  filter: invert(1);
 }
 
 .centered-area video {
@@ -151,6 +153,8 @@ span.j-icon {
   transform: translate(-50%, -50%);
   color: #fff;
   font-size: 70px;
+  width: 100px;
+  height: 100px;
 }
 
 .btm-btn:hover {
@@ -159,3 +163,32 @@ span.j-icon {
   transition: 200ms linear;
 }
 
+/*Feather*/
+
+span.icon-f {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+span.icon-f img {
+  width: 16;
+  width: 16px;
+  height: 16px;
+}
+
+span.icon-b {
+  width: 60px;
+  height: 60px;
+}
+
+span.icon-b img {
+  width: 100%;
+  filter: invert(1);
+}
+span.j-icon img {
+  width: 100%;
+  filter: invert(1);
+}

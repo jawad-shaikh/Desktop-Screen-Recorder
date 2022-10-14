@@ -16,7 +16,7 @@
 }
 
 .top-bar * {
-    user-select: none;
+  user-select: none;
 }
 html,
 body {
@@ -128,7 +128,9 @@ label {
   display: block;
 }
 
-input[type="text"] {
+input[type="text"],
+input[type="email"],
+input[type="password"] {
   width: calc(100% - 30px);
   border-radius: 5px border;
   border-radius: 5px;
@@ -145,7 +147,7 @@ input[type="text"] {
 }
 
 .form-call-to-action {
-  margin: 20px 0px;
+  margin: 5px 0px;
 }
 
 input[type="submit"] {
@@ -187,4 +189,32 @@ input[type="submit"] {
   text-decoration: none;
   font-weight: normal;
   font-size: 14px;
+}
+span.icon-f {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+span.icon-f img {
+  width: 16;
+  width: 16px;
+  height: 16px;
+}
+
+.close-title-btn:hover {
+  background: #08c1a1 !important;
+  color: #fff !important;
+  transition: 200ms linear !important;
+  filter: invert(1) !important;
+}
+
+.err-msg {
+  margin: 10px 0px;
+}
+
+small.err-message {
+  color: red;
 }

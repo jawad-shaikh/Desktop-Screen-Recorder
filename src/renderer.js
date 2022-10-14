@@ -5,6 +5,28 @@ const startRecording = document.getElementById("startRecording");
 const stopRecording = document.getElementById("stopRecording");
 const getSorces = document.getElementById("getSorces");
 
+const minimizeWindow = document.getElementById("minimizeWindow");
+const closeWindow = document.getElementById("closeWindow");
+const maximizeWindow = document.getElementById("maximizeWindow");
+
+if (minimizeWindow) {
+  minimizeWindow.addEventListener("click", () => {
+    electronAPI.minimize();
+  });
+}
+
+if (closeWindow) {
+  closeWindow.addEventListener("click", () => {
+    electronAPI.close();
+  });
+}
+
+if (maximizeWindow) {
+  maximizeWindow.addEventListener("click", () => {
+    electronAPI.toggleMaximize();
+  });
+}
+
 if (loginForm) {
   loginForm.addEventListener("submit", (e) => {
     e.preventDefault();

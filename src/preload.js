@@ -3,6 +3,8 @@ const { contextBridge, ipcRenderer } = require("electron");
 let mediaRecorder;
 let recordedChunks = [];
 
+console.log();
+
 contextBridge.exposeInMainWorld("electronAPI", {
   getSorces: () => ipcRenderer.send("GET-SOURCES"),
   startRecording: () => mediaRecorder.start(),
@@ -10,6 +12,9 @@ contextBridge.exposeInMainWorld("electronAPI", {
   login: (email, password) => ipcRenderer.send("LOGIN", email, password),
   signup: (username, email, password) =>
     ipcRenderer.send("SIGNUP", username, email, password),
+  minimize: () => ipcRenderer.send("MINIMIZE-WINDOW"),
+  toggleMaximize: () => ipcRenderer.send("MAXIMIZE-WINDOW"),
+  close: () => ipcRenderer.send("CLOSE-WINDOW"),
 });
 
 ipcRenderer.on("LOGIN_RESPONSE", async (event, res) => {
