@@ -40,15 +40,21 @@ ipcRenderer.on("SIGNUP_RESPONSE", async (event, res) => {
 ipcRenderer.on("SET_SOURCE", async (event, sourceId) => {
   try {
     const stream = await navigator.mediaDevices.getUserMedia({
+      // audio: {
+      //   mandatory: {
+      //     chromeMediaSource: "desktop",
+      //     chromeMediaSourceId: sourceId,
+      //   },
+      // },
       audio: false,
       video: {
         mandatory: {
           chromeMediaSource: "desktop",
           chromeMediaSourceId: sourceId,
-          minWidth: 1280,
-          maxWidth: 1280,
-          minHeight: 720,
-          maxHeight: 720,
+          minWidth: 12288,
+          minHeight: 6480,
+          // maxWidth: 1280,
+          // maxHeight: 720,
         },
       },
     });

@@ -44,8 +44,6 @@ ion-icon {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  -webkit-user-select: none;
-  -webkit-app-region: drag;
 }
 .window-title {
   display: flex;
@@ -191,4 +189,17 @@ span.icon-b img {
 span.j-icon img {
   width: 100%;
   filter: invert(1);
+}
+.top-bar:before {
+  position: absolute;
+  top: 0;
+  left: 49%;
+  transform: translateX(-50%);
+  content: "";
+  background: transparent;
+  height: 100%;
+  width: 68%;
+  -webkit-user-select: none;
+  -webkit-app-region: drag;
+   z-index: 999;
 }

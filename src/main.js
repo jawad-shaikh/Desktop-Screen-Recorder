@@ -3,7 +3,9 @@ const { JSDOM } = require("jsdom");
 const { window } = new JSDOM("");
 const $ = require("jquery")(window);
 const path = require("path");
-const { writeFile } = require("fs");
+const { writeFile, createReadStream } = require("fs");
+const { v4: uuidv4 } = require("uuid");
+const FormData = require("form-data");
 const {
   app,
   BrowserWindow,
@@ -11,6 +13,7 @@ const {
   ipcMain,
   Menu,
   Notification,
+  Tray,
 } = require("electron");
 
 const { API } = require("./consonant");
@@ -19,6 +22,9 @@ let mainWindow;
 let loginWindow;
 let signupWindow;
 let preloaderWindow;
+let userId;
+let tray = null;
+let iconPath = path.join(__dirname, "/assets/img/extra.png");
 
 const createMainWindow = () => {
   mainWindow = new BrowserWindow({
@@ -81,6 +87,7 @@ app.whenReady().then(() => {
       .then((localStorage) => {
         console.log(localStorage);
         if (localStorage.userId != null) {
+          userId = localStorage.userId;
           preloaderWindow.close();
           createMainWindow();
         } else {
@@ -88,6 +95,9 @@ app.whenReady().then(() => {
           createLoginWindow();
         }
       });
+
+    tray = new Tray(iconPath);
+    tray.setToolTip("Recod");
   }, 3000);
 
   app.on("activate", () => {
@@ -158,20 +168,45 @@ function callNotification() {
   const notif = {
     title: "Recod",
     body: "Video saved successfully",
-    icon: path.join(__dirname, "/assets/img/extra.png"),
+    icon: iconPath,
   };
 
   new Notification(notif).show();
 }
 
 ipcMain.on("SAVE-RECORDING", (event, buffer) => {
-  writeFile(path.join(__dirname, "../files/abc.mp4"), buffer, () => {
+  const uniqueId = uuidv4();
+
+  writeFile(path.join(__dirname, `../files/${uniqueId}.mp4`), buffer, () => {
     callNotification();
+
+    // let form = new FormData();
+    // const vidPath = path.join(__dirname, `../files/${uniqueId}.mp4`);
+
+    // form.append("file", createReadStream(vidPath));
+    // form.append("title", "sth");
+    // form.append("userId", userId);
+
+    // setTimeout(() => {
+    //   console.log(form);
+    //   $.ajax({
+    //     url: `${API}/saveRecording.php`,
+    //     type: "POST",
+    //     data: form,
+    //     processData: false,
+    //     contentType: false,
+    //     success: function (res) {
+    //       console.log(res);
+    //       callNotification();
+    //     },
+    //   });
+    // }, 3000);
   });
 });
 
 function selectSource(source) {
-  const code = "const icon = document.querySelector('.j-icon'); icon.remove();";
+  const code =
+    "var icon = document.querySelector('.j-icon'); if(icon) icon.remove();";
   mainWindow.webContents.executeJavaScript(code, true);
 
   mainWindow.webContents.send("SET_SOURCE", source.id);
