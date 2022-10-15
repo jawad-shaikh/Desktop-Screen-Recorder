@@ -15,6 +15,7 @@ const {
   Notification,
   Tray,
 } = require("electron");
+const fetch = require("node-fetch");
 
 const { API } = require("./consonant");
 
@@ -117,7 +118,10 @@ ipcMain.on("LOGIN", async (event, email, password) => {
   $.ajax({
     url: `${API}/login.php`,
     type: "POST",
-    data: { login_email: email, login_pass: password },
+    data: {
+      login_email: email,
+      login_pass: password,
+    },
     success: function (res) {
       console.log(res);
       if (res != 0) {
@@ -178,29 +182,23 @@ ipcMain.on("SAVE-RECORDING", (event, buffer) => {
   const uniqueId = uuidv4();
 
   writeFile(path.join(__dirname, `../files/${uniqueId}.mp4`), buffer, () => {
-    callNotification();
+    var form = new FormData();
+    const vidPath = path.join(__dirname, `../files/${uniqueId}.mp4`);
 
-    // let form = new FormData();
-    // const vidPath = path.join(__dirname, `../files/${uniqueId}.mp4`);
+    form.append("file", createReadStream(vidPath));
+    form.append("title", "sth");
+    form.append("userId", userId);
 
-    // form.append("file", createReadStream(vidPath));
-    // form.append("title", "sth");
-    // form.append("userId", userId);
-
-    // setTimeout(() => {
-    //   console.log(form);
-    //   $.ajax({
-    //     url: `${API}/saveRecording.php`,
-    //     type: "POST",
-    //     data: form,
-    //     processData: false,
-    //     contentType: false,
-    //     success: function (res) {
-    //       console.log(res);
-    //       callNotification();
-    //     },
-    //   });
-    // }, 3000);
+    setTimeout(() => {
+      fetch(`${API}/saveRecording.php`, { method: "POST", body: form })
+        .then((res) => {
+          return res.text();
+        })
+        .then(function (json) {
+          console.log(json);
+          callNotification();
+        });
+    }, 3000);
   });
 });
 
