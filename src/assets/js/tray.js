@@ -13,14 +13,15 @@ const makeTray = (mainWindow) => {
       {
         label: "Start Recording",
         click: () => {
-          selectSource(sources[0], mainWindow);
-          mainWindow.webContents.send("JUST_START_RECORDING");
+          const code = `document.getElementById("startRecording").click()`;
+          mainWindow.webContents.executeJavaScript(code, true);
         },
       },
       {
         label: "Stop Recording",
         click: () => {
-          mainWindow.webContents.send("JUST_STOP_RECORDING");
+          const code = `document.getElementById("stopRecording").click()`;
+          mainWindow.webContents.executeJavaScript(code, true);
         },
       },
     ]);

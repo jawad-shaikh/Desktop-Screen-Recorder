@@ -74,7 +74,7 @@ app.whenReady().then(() => {
       createMainWindow();
       preloaderWindow.close();
       setSourceAsEntireScreen(mainWindow);
-      makeTray();
+      makeTray(mainWindow);
     });
   }, 3000);
 
@@ -144,5 +144,5 @@ ipcMain.on("MAXIMIZE-WINDOW", () => {
 });
 
 ipcMain.on("CLOSE-WINDOW", () => {
-  BrowserWindow.getFocusedWindow().close();
+  BrowserWindow.getFocusedWindow().hide();
 });
