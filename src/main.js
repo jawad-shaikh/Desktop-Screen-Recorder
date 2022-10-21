@@ -1,16 +1,21 @@
 const path = require("path");
 const { app, BrowserWindow, ipcMain, Menu } = require("electron");
-const fetch = require("node-fetch");
 
-const { isAuthenticated, login } = require("./assets/js/auth");
+const { makeTray } = require("./assets/js/tray");
+const {
+  isAuthenticated,
+  login,
+  logout,
+  loginFailed,
+} = require("./assets/js/auth");
 const {
   getInputSources,
   selectSource,
+  setSourceAsEntireScreen,
   saveRecording,
 } = require("./assets/js/video");
 
 let userId;
-let videoOptionsMenu;
 
 let mainWindow;
 let loginWindow;
@@ -59,20 +64,17 @@ app.whenReady().then(() => {
   createPreloaderWindow();
 
   setTimeout(() => {
-    userId = isAuthenticated(preloaderWindow);
-    userId.then((id) => {
+    isAuthenticated(preloaderWindow, function (id) {
       if (id == undefined) {
         createLoginWindow();
         preloaderWindow.close();
-      } else {
-        createMainWindow();
-        preloaderWindow.close();
-
-        const availableSources = getInputSources();
-        availableSources.then((sources) => {
-          selectSource(sources[0], mainWindow);
-        });
+        return;
       }
+      userId = id;
+      createMainWindow();
+      preloaderWindow.close();
+      setSourceAsEntireScreen(mainWindow);
+      makeTray();
     });
   }, 3000);
 
@@ -90,14 +92,32 @@ app.on("window-all-closed", () => {
 });
 
 ipcMain.on("LOGIN", async (event, email, password) => {
-  login(email, password, loginWindow, createMainWindow);
+  login(email, password, function (res) {
+    console.log("login output: ", res);
+    if (res == 0) {
+      loginFailed(loginWindow);
+      return;
+    }
+    res = JSON.parse(res);
+    userId = res.user_id;
+    const code = `localStorage.setItem("userId", ${res.user_id})`;
+    loginWindow.webContents.executeJavaScript(code, true);
+
+    createMainWindow();
+    setSourceAsEntireScreen(mainWindow);
+    makeTray(mainWindow);
+
+    setTimeout(() => {
+      loginWindow.close();
+    }, 1500);
+  });
 });
 
 ipcMain.on("GET-SOURCES", async () => {
   const availableSources = getInputSources();
 
   availableSources.then((sources) => {
-    videoOptionsMenu = Menu.buildFromTemplate(
+    let videoOptionsMenu = Menu.buildFromTemplate(
       sources.map((source) => {
         return {
           label: source.name,

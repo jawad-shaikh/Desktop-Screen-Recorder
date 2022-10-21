@@ -3,7 +3,7 @@ const { contextBridge, ipcRenderer } = require("electron");
 let mediaRecorder;
 let recordedChunks = [];
 
-contextBridge.exposeInMainWorld("electronAPI", {
+const apiObject = {
   getSorces: () => ipcRenderer.send("GET-SOURCES"),
   startRecording: () => mediaRecorder.start(),
   stopRecording: () => mediaRecorder.stop(),
@@ -11,17 +11,9 @@ contextBridge.exposeInMainWorld("electronAPI", {
   minimize: () => ipcRenderer.send("MINIMIZE-WINDOW"),
   toggleMaximize: () => ipcRenderer.send("MAXIMIZE-WINDOW"),
   close: () => ipcRenderer.send("CLOSE-WINDOW"),
-});
+};
 
-ipcRenderer.on("LOGIN_RESPONSE", async (event, res) => {
-  if (res == 0) {
-    console.log("incorrect creds");
-  } else {
-    console.log("logged in");
-    res = JSON.parse(res);
-    localStorage.setItem("userId", res.user_id);
-  }
-});
+contextBridge.exposeInMainWorld("electronAPI", apiObject);
 
 ipcRenderer.on("SET_SOURCE", async (event, sourceId) => {
   try {

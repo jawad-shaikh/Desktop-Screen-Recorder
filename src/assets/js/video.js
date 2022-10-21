@@ -21,6 +21,13 @@ const selectSource = (source, mainWindow) => {
   mainWindow.webContents.send("SET_SOURCE", source.id);
 };
 
+const setSourceAsEntireScreen = (mainWindow) => {
+  const availableSources = getInputSources();
+  availableSources.then((sources) => {
+    selectSource(sources[0], mainWindow);
+  });
+};
+
 const saveRecording = (buffer, userId) => {
   const uniqueId = uuidv4();
   const vidPath = path.join(__dirname, `../../../files/${uniqueId}.mp4`);
@@ -28,25 +35,24 @@ const saveRecording = (buffer, userId) => {
   writeFile(vidPath, buffer, () => {
     var form = new FormData();
 
-    userId.then((id) => {
-      form.append("title", JSON.stringify("sth"));
-      form.append("userId", JSON.stringify(id));
-      form.append("file", createReadStream(vidPath));
+    form.append("title", "sth");
+    form.append("userId", userId);
+    form.append("file", createReadStream(vidPath));
 
-      fetch(`${API}/saveRecording.php`, { method: "POST", body: form })
-        .then((res) => {
-          return res.text();
-        })
-        .then(function (json) {
-          console.log(json);
-          callNotification("Recod", "Video saved successfully");
-        });
-    });
+    fetch(`${API}/saveRecording.php`, { method: "POST", body: form })
+      .then((res) => {
+        return res.text();
+      })
+      .then(function (json) {
+        console.log(json);
+        callNotification("Recod", "Video saved successfully");
+      });
   });
 };
 
 module.exports = {
   getInputSources,
   selectSource,
+  setSourceAsEntireScreen,
   saveRecording,
 };

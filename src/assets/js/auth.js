@@ -4,16 +4,16 @@ const $ = require("jquery")(window);
 
 const { API } = require("./constant");
 
-const isAuthenticated = (preloaderWindow) => {
-  return preloaderWindow.webContents
+const isAuthenticated = (preloaderWindow, callback) => {
+  preloaderWindow.webContents
     .executeJavaScript("({...localStorage});", true)
     .then((localStorage) => {
       console.log(localStorage);
-      return localStorage.userId;
+      callback(localStorage.userId); // "number" if exists, or "undefined"
     });
 };
 
-const login = (email, password, loginWindow, createMainWindow) => {
+const login = (email, password, callback) => {
   $.ajax({
     url: `${API}/login.php`,
     type: "POST",
@@ -22,26 +22,21 @@ const login = (email, password, loginWindow, createMainWindow) => {
       login_pass: password,
     },
     success: function (res) {
-      console.log(res);
-      if (res != 0) {
-        res = JSON.parse(res);
-
-        const code = `localStorage.setItem("userId", ${res.user_id})`;
-        loginWindow.webContents.executeJavaScript(code, true);
-
-        setTimeout(() => {
-          createMainWindow();
-          loginWindow.close();
-        }, 1000);
-      } else {
-        const code = `var elem = document.querySelector('.err-message');
-        elem.innerHTML = "Incorrect Credentials";`;
-        loginWindow.webContents.executeJavaScript(code, true);
-      }
+      callback(res); // "0" if incorrect creds, or json
     },
   });
 };
 
-const logout = () => {};
+const logout = (mainWindow) => {
+  const code = `localStorage.removeItem("userId")`;
+  mainWindow.webContents.executeJavaScript(code, true);
+  mainWindow.close();
+};
 
-module.exports = { isAuthenticated, login, logout };
+const loginFailed = (loginWindow) => {
+  const code = `var elem = document.querySelector('.err-message');
+                elem.innerHTML = "Incorrect Credentials";`;
+  loginWindow.webContents.executeJavaScript(code, true);
+};
+
+module.exports = { isAuthenticated, login, logout, loginFailed };
