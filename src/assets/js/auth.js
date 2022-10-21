@@ -42,4 +42,6 @@ const login = (email, password, loginWindow, createMainWindow) => {
   });
 };
 
-module.exports = { isAuthenticated, login };
+const logout = () => {};
+
+module.exports = { isAuthenticated, login, logout };

@@ -1,7 +1,4 @@
 const path = require("path");
-// const { writeFile, createReadStream } = require("fs");
-// const { v4: uuidv4 } = require("uuid");
-// const FormData = require("form-data");
 const { app, BrowserWindow, ipcMain, Menu } = require("electron");
 const fetch = require("node-fetch");
 

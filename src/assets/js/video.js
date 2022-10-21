@@ -7,6 +7,7 @@ const fetch = require("node-fetch");
 
 const { API } = require("./constant");
 const { callNotification } = require("./constant");
+const { from } = require("form-data");
 
 const getInputSources = async () => {
   const inputSources = await desktopCapturer.getSources({
@@ -26,26 +27,21 @@ const saveRecording = (buffer, userId) => {
 
   writeFile(vidPath, buffer, () => {
     var form = new FormData();
-    // form = {
-    //   title: "sth",
-    //   userId: userId,
-    //   file: createReadStream(vidPath),
-    // };
 
-    // form.append("title", "sth");
-    // form.append("userId", userId);
-    // form.append("file", createReadStream(vidPath));
+    userId.then((id) => {
+      form.append("title", JSON.stringify("sth"));
+      form.append("userId", JSON.stringify(id));
+      form.append("file", createReadStream(vidPath));
 
-    // setTimeout(() => {
-    //   fetch(`${API}/saveRecording.php`, { method: "POST", body: form })
-    //     .then((res) => {
-    //       return res.text();
-    //     })
-    //     .then(function (json) {
-    //       console.log(json);
-    //       callNotification("Recod", "Video saved successfully");
-    //     });
-    // }, 3000);
+      fetch(`${API}/saveRecording.php`, { method: "POST", body: form })
+        .then((res) => {
+          return res.text();
+        })
+        .then(function (json) {
+          console.log(json);
+          callNotification("Recod", "Video saved successfully");
+        });
+    });
   });
 };
 
