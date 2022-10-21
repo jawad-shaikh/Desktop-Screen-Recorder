@@ -1,31 +1,23 @@
-require("dotenv").config();
-const { JSDOM } = require("jsdom");
-const { window } = new JSDOM("");
-const $ = require("jquery")(window);
 const path = require("path");
-const { writeFile, createReadStream } = require("fs");
-const { v4: uuidv4 } = require("uuid");
-const FormData = require("form-data");
-const {
-  app,
-  BrowserWindow,
-  desktopCapturer,
-  ipcMain,
-  Menu,
-  Notification,
-  Tray,
-} = require("electron");
+// const { writeFile, createReadStream } = require("fs");
+// const { v4: uuidv4 } = require("uuid");
+// const FormData = require("form-data");
+const { app, BrowserWindow, ipcMain, Menu } = require("electron");
 const fetch = require("node-fetch");
 
-const { API } = require("./consonant");
+const { isAuthenticated, login } = require("./assets/js/auth");
+const {
+  getInputSources,
+  selectSource,
+  saveRecording,
+} = require("./assets/js/video");
+
+let userId;
+let videoOptionsMenu;
 
 let mainWindow;
 let loginWindow;
-let signupWindow;
 let preloaderWindow;
-let userId;
-let tray = null;
-let iconPath = path.join(__dirname, "/assets/img/extra.png");
 
 const createMainWindow = () => {
   mainWindow = new BrowserWindow({
@@ -37,7 +29,7 @@ const createMainWindow = () => {
     },
   });
 
-  mainWindow.loadFile(path.join(__dirname, "index.html"));
+  mainWindow.loadFile(path.join(__dirname, "./screens/index.html"));
 };
 
 const createLoginWindow = () => {
@@ -50,20 +42,7 @@ const createLoginWindow = () => {
     },
   });
 
-  loginWindow.loadFile(path.join(__dirname, "login.html"));
-};
-
-const createSignupWindow = () => {
-  signupWindow = new BrowserWindow({
-    width: 302,
-    height: 502,
-    frame: false,
-    webPreferences: {
-      preload: path.join(__dirname, "preload.js"),
-    },
-  });
-
-  signupWindow.loadFile(path.join(__dirname, "signup.html"));
+  loginWindow.loadFile(path.join(__dirname, "./screens/login.html"));
 };
 
 const createPreloaderWindow = () => {
@@ -76,29 +55,28 @@ const createPreloaderWindow = () => {
     },
   });
 
-  preloaderWindow.loadFile(path.join(__dirname, "preloader.html"));
+  preloaderWindow.loadFile(path.join(__dirname, "./screens/preloader.html"));
 };
 
 app.whenReady().then(() => {
   createPreloaderWindow();
 
   setTimeout(() => {
-    preloaderWindow.webContents
-      .executeJavaScript("({...localStorage});", true)
-      .then((localStorage) => {
-        console.log(localStorage);
-        if (localStorage.userId != null) {
-          userId = localStorage.userId;
-          preloaderWindow.close();
-          createMainWindow();
-        } else {
-          preloaderWindow.close();
-          createLoginWindow();
-        }
-      });
+    userId = isAuthenticated(preloaderWindow);
+    userId.then((id) => {
+      if (id == undefined) {
+        createLoginWindow();
+        preloaderWindow.close();
+      } else {
+        createMainWindow();
+        preloaderWindow.close();
 
-    tray = new Tray(iconPath);
-    tray.setToolTip("Recod");
+        const availableSources = getInputSources();
+        availableSources.then((sources) => {
+          selectSource(sources[0], mainWindow);
+        });
+      }
+    });
   }, 3000);
 
   app.on("activate", () => {
@@ -115,100 +93,28 @@ app.on("window-all-closed", () => {
 });
 
 ipcMain.on("LOGIN", async (event, email, password) => {
-  $.ajax({
-    url: `${API}/login.php`,
-    type: "POST",
-    data: {
-      login_email: email,
-      login_pass: password,
-    },
-    success: function (res) {
-      console.log(res);
-      if (res != 0) {
-        loginWindow.webContents.send("LOGIN_RESPONSE", res);
-        createMainWindow();
-        loginWindow.close();
-      } else {
-        const code = `var elem = document.querySelector('.err-message');
-        elem.innerHTML = "Incorrect Credentials";`;
-        loginWindow.webContents.executeJavaScript(code, true);
-
-        loginWindow.webContents.send("LOGIN_RESPONSE", res);
-      }
-    },
-  });
-});
-
-ipcMain.on("SIGNUP", async (event, username, email, password) => {
-  $.ajax({
-    url: `${API}/register.php`,
-    type: "POST",
-    data: { user_name: username, user_email: email, user_pass: password },
-    success: function (res) {
-      console.log(res);
-      signupWindow.webContents.send("SIGNUP_RESPONSE", res);
-    },
-  });
+  login(email, password, loginWindow, createMainWindow);
 });
 
 ipcMain.on("GET-SOURCES", async () => {
-  const inputSources = await desktopCapturer.getSources({
-    types: ["window", "screen"],
+  const availableSources = getInputSources();
+
+  availableSources.then((sources) => {
+    videoOptionsMenu = Menu.buildFromTemplate(
+      sources.map((source) => {
+        return {
+          label: source.name,
+          click: () => selectSource(source, mainWindow),
+        };
+      })
+    );
+    videoOptionsMenu.popup();
   });
-
-  const videoOptionsMenu = Menu.buildFromTemplate(
-    inputSources.map((source) => {
-      return {
-        label: source.name,
-        click: () => selectSource(source),
-      };
-    })
-  );
-
-  videoOptionsMenu.popup();
 });
-
-function callNotification() {
-  const notif = {
-    title: "Recod",
-    body: "Video saved successfully",
-    icon: iconPath,
-  };
-
-  new Notification(notif).show();
-}
 
 ipcMain.on("SAVE-RECORDING", (event, buffer) => {
-  const uniqueId = uuidv4();
-
-  writeFile(path.join(__dirname, `../files/${uniqueId}.mp4`), buffer, () => {
-    var form = new FormData();
-    const vidPath = path.join(__dirname, `../files/${uniqueId}.mp4`);
-
-    form.append("file", createReadStream(vidPath));
-    form.append("title", "sth");
-    form.append("userId", userId);
-
-    setTimeout(() => {
-      fetch(`${API}/saveRecording.php`, { method: "POST", body: form })
-        .then((res) => {
-          return res.text();
-        })
-        .then(function (json) {
-          console.log(json);
-          callNotification();
-        });
-    }, 3000);
-  });
+  saveRecording(buffer, userId);
 });
-
-function selectSource(source) {
-  const code =
-    "var icon = document.querySelector('.j-icon'); if(icon) icon.remove();";
-  mainWindow.webContents.executeJavaScript(code, true);
-
-  mainWindow.webContents.send("SET_SOURCE", source.id);
-}
 
 ipcMain.on("MINIMIZE-WINDOW", () => {
   BrowserWindow.getFocusedWindow().minimize();

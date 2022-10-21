@@ -31,22 +31,10 @@ if (loginForm) {
   loginForm.addEventListener("submit", (e) => {
     e.preventDefault();
 
-    const loginEmail = document.getElementById("loginEmail").value;
-    const loginPassword = document.getElementById("loginPassword").value;
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
 
-    electronAPI.login(loginEmail, loginPassword);
-  });
-}
-
-if (signupForm) {
-  signupForm.addEventListener("submit", (e) => {
-    e.preventDefault();
-
-    const signupUsername = document.getElementById("signupUsername").value;
-    const signupEmail = document.getElementById("signupEmail").value;
-    const signupPassword = document.getElementById("signupPassword").value;
-
-    electronAPI.signup(signupUsername, signupEmail, signupPassword);
+    electronAPI.login(email, password);
   });
 }
 

@@ -3,15 +3,11 @@ const { contextBridge, ipcRenderer } = require("electron");
 let mediaRecorder;
 let recordedChunks = [];
 
-console.log();
-
 contextBridge.exposeInMainWorld("electronAPI", {
   getSorces: () => ipcRenderer.send("GET-SOURCES"),
   startRecording: () => mediaRecorder.start(),
   stopRecording: () => mediaRecorder.stop(),
   login: (email, password) => ipcRenderer.send("LOGIN", email, password),
-  signup: (username, email, password) =>
-    ipcRenderer.send("SIGNUP", username, email, password),
   minimize: () => ipcRenderer.send("MINIMIZE-WINDOW"),
   toggleMaximize: () => ipcRenderer.send("MAXIMIZE-WINDOW"),
   close: () => ipcRenderer.send("CLOSE-WINDOW"),
@@ -27,34 +23,21 @@ ipcRenderer.on("LOGIN_RESPONSE", async (event, res) => {
   }
 });
 
-ipcRenderer.on("SIGNUP_RESPONSE", async (event, res) => {
-  if (res == 0) {
-    console.log("email already exists");
-  } else {
-    console.log("logged in");
-    res = JSON.parse(res);
-    localStorage.setItem("userId", res.user_id);
-  }
-});
-
 ipcRenderer.on("SET_SOURCE", async (event, sourceId) => {
   try {
     const stream = await navigator.mediaDevices.getUserMedia({
-      // audio: {
-      //   mandatory: {
-      //     chromeMediaSource: "desktop",
-      //     chromeMediaSourceId: sourceId,
-      //   },
-      // },
-      audio: false,
+      audio: {
+        mandatory: {
+          chromeMediaSource: "desktop",
+          chromeMediaSourceId: sourceId,
+        },
+      },
       video: {
         mandatory: {
           chromeMediaSource: "desktop",
           chromeMediaSourceId: sourceId,
           minWidth: 12288,
           minHeight: 6480,
-          // maxWidth: 1280,
-          // maxHeight: 720,
         },
       },
     });

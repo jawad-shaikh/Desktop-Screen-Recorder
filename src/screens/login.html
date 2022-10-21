@@ -5,13 +5,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Recod</title>
-    <link rel="stylesheet" href="assets/css/account.css" />
+    <link rel="stylesheet" href="../assets/css/account.css" />
   </head>
   <body>
     <div class="main-window">
       <div class="top-bar">
         <div class="window-title">
-          <img src="assets/img/logo-16.png" alt="title logo" />
+          <img src="../assets/img/logo-16.png" alt="title logo" />
           <strong>Recod</strong>
         </div>
         <div class="window-cta">
@@ -21,7 +21,7 @@
             id="minimizeWindow"
           >
             <span class="icon-f"
-              ><img src="assets/icons/minus-circle.svg" alt="Minimize"
+              ><img src="../assets/icons/minus-circle.svg" alt="Minimize"
             /></span>
           </button>
           <button
@@ -30,7 +30,7 @@
             id="closeWindow"
           >
             <span class="icon-f"
-              ><img src="assets/icons/x-circle.svg" alt="Close"
+              ><img src="../assets/icons/x-circle.svg" alt="Close"
             /></span>
           </button>
         </div>
@@ -38,24 +38,20 @@
       <div class="centered-area">
         <form id="loginForm">
           <div class="form-title">
-            <img src="assets/img/logo-16.png" alt="Recod Logo" />
+            <img src="../assets/img/logo-16.png" alt="Recod Logo" />
             <h3>Log in to Recod</h3>
           </div>
 
           <div class="form-body-wrapper">
             <div class="form-body">
-              <input
-                type="text"
-                placeholder="Enter Email Address"
-                id="loginEmail"
-              />
+              <input type="text" placeholder="Enter Email Address" id="email" />
             </div>
 
             <div class="form-bottom">
               <input
                 type="password"
                 placeholder="Enter Password"
-                id="loginPassword"
+                id="password"
               />
             </div>
           </div>
@@ -81,6 +77,6 @@
       </div>
     </div>
 
-    <script src="./renderer.js"></script>
+    <script src="../assets/js/renderer.js"></script>
   </body>
 </html>
