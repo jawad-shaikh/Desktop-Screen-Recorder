@@ -11,6 +11,15 @@ const makeTray = (mainWindow) => {
   availableSources.then((sources) => {
     const contextMenu = Menu.buildFromTemplate([
       {
+        label: "Show / Hide",
+        click: () => {
+          mainWindow.isVisible() ? mainWindow.hide() : mainWindow.show();
+        },
+      },
+      {
+        type: "separator",
+      },
+      {
         label: "Start Recording",
         click: () => {
           const code = `document.getElementById("startRecording").click()`;
@@ -23,6 +32,12 @@ const makeTray = (mainWindow) => {
           const code = `document.getElementById("stopRecording").click()`;
           mainWindow.webContents.executeJavaScript(code, true);
         },
+      },
+      {
+        type: "separator",
+      },
+      {
+        role: "quit",
       },
     ]);
 
