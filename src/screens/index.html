@@ -1,15 +1,6 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="UTF-8" />
-    <meta
-      http-equiv="Content-Security-Policy"
-      content="default-src 'self'; script-src 'self'"
-    />
-    <meta
-      http-equiv="X-Content-Security-Policy"
-      content="default-src 'self'; script-src 'self'"
-    />
     <title>Recod</title>
     <link rel="stylesheet" href="../assets/css/style.css" />
   </head>
@@ -48,6 +39,10 @@
       </div>
       <div class="centered-area">
         <video muted></video>
+        <span class="start-timer"
+          ><span class="blink-ball"></span>
+          <span class="real-timer">00: 00: 00</span>
+        </span>
       </div>
       <div class="bottom-bar">
         <button class="video-start btm-btn" id="startRecording">
@@ -69,8 +64,13 @@
           <span>Source</span>
         </button>
       </div>
+
+      <div class="message-box">
+        <small>Please Start The Recording First!</small>
+      </div>
     </div>
 
+    <script src="../assets/js/counter.js"></script>
     <script src="../assets/js/renderer.js"></script>
   </body>
 </html>

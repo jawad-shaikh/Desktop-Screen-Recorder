@@ -4,7 +4,8 @@
   "description": "",
   "main": "src/main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "electron": "ELECTRON_DISABLE_SECURITY_WARNINGS=true electron ."
   },
   "author": "",
   "license": "ISC",
