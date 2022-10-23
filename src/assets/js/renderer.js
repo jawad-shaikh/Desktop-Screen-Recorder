@@ -8,6 +8,7 @@ const getSorces = document.getElementById("getSorces");
 const minimizeWindow = document.getElementById("minimizeWindow");
 const closeWindow = document.getElementById("closeWindow");
 const maximizeWindow = document.getElementById("maximizeWindow");
+const logout = document.getElementById("logout");
 
 if (minimizeWindow) {
   minimizeWindow.addEventListener("click", () => {
@@ -24,6 +25,12 @@ if (closeWindow) {
 if (maximizeWindow) {
   maximizeWindow.addEventListener("click", () => {
     electronAPI.toggleMaximize();
+  });
+}
+
+if (logout) {
+  logout.addEventListener("click", () => {
+    electronAPI.logout();
   });
 }
 

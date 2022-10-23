@@ -3,6 +3,7 @@ const { window } = new JSDOM("");
 const $ = require("jquery")(window);
 
 const { API } = require("./constant");
+const { app } = require("electron");
 
 const isAuthenticated = (preloaderWindow, callback) => {
   preloaderWindow.webContents
@@ -30,7 +31,10 @@ const login = (email, password, callback) => {
 const logout = (mainWindow) => {
   const code = `localStorage.removeItem("userId")`;
   mainWindow.webContents.executeJavaScript(code, true);
-  mainWindow.close();
+
+  setTimeout(() => {
+    app.quit();
+  }, 2000);
 };
 
 const loginFailed = (loginWindow) => {

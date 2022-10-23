@@ -93,6 +93,10 @@ app.on("window-all-closed", () => {
   }
 });
 
+ipcMain.on("LOGOUT", async (event) => {
+  logout(mainWindow);
+});
+
 ipcMain.on("LOGIN", async (event, email, password) => {
   login(email, password, function (res) {
     console.log("login output: ", res);

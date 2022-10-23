@@ -198,7 +198,7 @@ span.j-icon img {
   content: "";
   background: transparent;
   height: 100%;
-  width: 68%;
+  width: 50%;
   -webkit-user-select: none;
   -webkit-app-region: drag;
    z-index: 999;
@@ -282,4 +282,28 @@ button[disabled]:hover {
   opacity: 1;
   transform: translateX(-50%) translateY(0px);
   visibility: visible;
+}
+
+button.logout-btn.cta-btn {
+  height: 80%;
+  background: #f73e5e;
+  color: #fff;
+  border: none;
+  width: 100px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 0px 15px;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: 200ms linear;
+}
+
+button.logout-btn.cta-btn .icon-f img {
+  filter: invert(1);
+}
+
+button.logout-btn.cta-btn:hover {
+  background: #ff7d94;
+  transition: 200ms linear;
 }

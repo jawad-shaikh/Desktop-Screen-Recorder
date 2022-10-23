@@ -8,6 +8,7 @@ const apiObject = {
   startRecording: () => mediaRecorder.start(),
   stopRecording: () => mediaRecorder.stop(),
   login: (email, password) => ipcRenderer.send("LOGIN", email, password),
+  logout: () => ipcRenderer.send("LOGOUT"),
   minimize: () => ipcRenderer.send("MINIMIZE-WINDOW"),
   toggleMaximize: () => ipcRenderer.send("MAXIMIZE-WINDOW"),
   close: () => ipcRenderer.send("CLOSE-WINDOW"),
