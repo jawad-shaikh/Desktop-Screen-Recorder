@@ -3,8 +3,7 @@ const { iconPath } = require("./constant");
 const { getInputSources, selectSource } = require("./video");
 
 const makeTray = (mainWindow) => {
-  let tray = null;
-  tray = new Tray(iconPath);
+  let tray = new Tray(iconPath);
 
   const availableSources = getInputSources();
 

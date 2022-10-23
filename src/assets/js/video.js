@@ -6,7 +6,7 @@ const FormData = require("form-data");
 const fetch = require("node-fetch");
 
 const { API } = require("./constant");
-const { callNotification } = require("./constant");
+const { callNotification } = require("./notification");
 
 const getInputSources = async () => {
   const inputSources = await desktopCapturer.getSources({

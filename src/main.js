@@ -2,6 +2,7 @@ const path = require("path");
 const { app, BrowserWindow, ipcMain, Menu } = require("electron");
 
 const { makeTray } = require("./assets/js/tray");
+const { toggleRecordingState } = require("./assets/js/shortcut");
 const {
   isAuthenticated,
   login,
@@ -75,6 +76,7 @@ app.whenReady().then(() => {
       preloaderWindow.close();
       setSourceAsEntireScreen(mainWindow);
       makeTray(mainWindow);
+      toggleRecordingState(mainWindow);
     });
   }, 3000);
 
